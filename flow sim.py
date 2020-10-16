@@ -149,8 +149,8 @@ def v_freestream(x, y):
 
 
 # vortex flow function
-def v_vortex(a, b):
-    x = a - obj_centerx
+def v_vortex(a, b, c):
+    x = a - c
     y = b - 0
     theta = math.atan2(y, x)
     r = math.sqrt(y ** 2 + x ** 2)
@@ -214,7 +214,7 @@ if render_mode == 0:
             j = b - ymax/2
             source = v_source(i, j)
             freestream = v_freestream(i, j)
-            vortx = v_vortex(i, j)
+            vortx = v_vortex(i, j, obj_centerx)
             sinkv = v_sink(i, j)
             velx = source[0] * 1 + freestream[0] * 1 + vortx[0] + sinkv[0]
             vely = source[1] * 1 + freestream[1] * 1 + vortx[1] + sinkv[1]
@@ -310,15 +310,15 @@ while running:
             # finding all the velocity components from the used flow functions
             source = v_source(pos[i].p[0], pos[i].p[1])
             freestream = v_freestream(pos[i].p[0], pos[i].p[1])
-            vortx = v_vortex(pos[i].p[0], pos[i].p[1])
+            vortx = v_vortex(pos[i].p[0], pos[i].p[1], obj_centerx)
             sinkv = v_sink(pos[i].p[0], pos[i].p[1])
 
             # summing the velocity components from all the used flow functions
-            pos[i].p[0] = pos[i].p[0] + (source[0]*1 + freestream[0]*1 + vortx[0] + sinkv[0])*(dt/dt_factor)
-            pos[i].p[1] = pos[i].p[1] + (source[1]*1 + freestream[1]*1 + vortx[1] + sinkv[1])*(dt/dt_factor)
+            pos[i].p[0] = pos[i].p[0] + (source[0]*1 + freestream[0]*1 + vortx[0] + sinkv[0]*1)*(dt/dt_factor)
+            pos[i].p[1] = pos[i].p[1] + (source[1]*1 + freestream[1]*1 + vortx[1] + sinkv[1]*1)*(dt/dt_factor)
 
-            velx = source[0]*1 + freestream[0]*1 + vortx[0] + sinkv[0]
-            vely = source[1]*1 + freestream[1]*1 + vortx[1] + sinkv[1]
+            velx = source[0]*1 + freestream[0]*1 + vortx[0] + sinkv[0]*1
+            vely = source[1]*1 + freestream[1]*1 + vortx[1] + sinkv[1]*1
             vel = vely**2 + velx**2
             rgb_factor1 = math.sqrt(vel)/Vfreestream
             rgb_factor = 0.5*(rgb_factor1**4)
@@ -365,21 +365,21 @@ while running:
 
     if render_mode == 0:
         pg.surfarray.blit_array(scr, arr)
-
-    text1 = font.render("Backspace = restart*", True, white)
-    text2 = font.render("v = toggle vortex on/off", True, white)
-    text3 = font.render("s = toggle sink on/off", True, white)
-    text4 = font.render("Key up/down = + or - vorticity", True, white)
-    """text5 = font.render("Key down = decrease vorticity", True ,white)"""
-    text6 = font.render("r = toggle rays or streamlines", True, white)
-    text7 = font.render("Space bar = toggle pause", True, white)
-    scr.blit(text1, (15, 15))
-    scr.blit(text7, (15, 35))
-    scr.blit(text3, (15, 55))
-    scr.blit(text2, (15, 75))
-    scr.blit(text6, (15, 95))
-    scr.blit(text4, (15, 115))
-    """scr.blit(text5, (15, 135))"""
+    else:
+        text1 = font.render("Backspace = restart*", True, white)
+        text2 = font.render("v = toggle vortex on/off", True, white)
+        text3 = font.render("s = toggle sink on/off", True, white)
+        text4 = font.render("Key up/down = + or - vorticity", True, white)
+        """text5 = font.render("Key down = decrease vorticity", True ,white)"""
+        text6 = font.render("r = toggle rays or streamlines", True, white)
+        text7 = font.render("Space bar = toggle pause", True, white)
+        scr.blit(text1, (15, 15))
+        scr.blit(text7, (15, 35))
+        scr.blit(text3, (15, 55))
+        scr.blit(text2, (15, 75))
+        scr.blit(text6, (15, 95))
+        scr.blit(text4, (15, 115))
+        """scr.blit(text5, (15, 135))"""
 
     # update screen
     pg.display.flip()
