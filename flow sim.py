@@ -20,7 +20,7 @@ render_mode = 1
 #################################################
 
 # display settings
-xmax = 1440     # width of display window
+xmax = 1400     # width of display window
 ymax = 750      # height of display window
 """xmax = 1080
 ymax = 720"""
@@ -195,7 +195,7 @@ if rays_or_streamlines == 0:
 else:
     y_range = 1
     # count = number of particles you want to appear on screen
-    count = 55
+    ray_count = 55
 
 if sink == 0:
     obj_magnitude = obj_magnitude/90
@@ -231,7 +231,7 @@ if render_mode == 0:
     print("Rendering time: ", round(toc - tic, 4), "seconds")
 else:
     pg.draw.circle(scr, white, [int(origin[0]) + obj_centerx, int(origin[1])], 3)
-    load_particles(count)
+    load_particles(ray_count)
 
 play = 1
 running = 1
@@ -322,7 +322,6 @@ while running:
             vel = vely**2 + velx**2
             rgb_factor1 = math.sqrt(vel)/Vfreestream
             rgb_factor = 0.5*(rgb_factor1**4)
-
             # DO NOT EVER INT() ANY OF THE RGB FACTORS I WILL KILL YOUUU
 
             rgb = min(1, rgb_factor)
@@ -332,7 +331,7 @@ while running:
             pg.draw.circle(scr, colour, position, 4-(2*pos[i].p[2]))"""
 
             # drawing the particle on screen
-            pg.draw.rect(scr, colour, [position[0], position[1], 2.5, 0.9])
+            pg.draw.rect(scr, colour, [position[0], position[1], 2.5, 1])
 
             # teleport particle to left edge of the screen when it hits the right edge
             if pos[i].p[0] > xmax/2:
