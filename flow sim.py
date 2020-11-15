@@ -12,7 +12,7 @@ pg.display.set_caption("my impeccable wave generator")
 pg.font.init()
 t = pg.time.get_ticks()*0.001
 
-# github test...
+# github test...againsss
 #################################################
 # render_mode:  0 = colour entire window with velocity gradient,
 #               1 = use particles to visualize flow on window
